@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import API from "../../utils/config";
+
 import {
   Box,
   Button,
@@ -11,8 +12,9 @@ import {
   Radio,
   RadioGroup,
   Typography,
-  GridLegacy as Grid, // <-- MUHIM O'ZGARTIRISH
+  GridLegacy as Grid,
 } from "@mui/material";
+
 import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 
@@ -63,12 +65,36 @@ const Quiz = () => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const res = await API.get(
-        `api.php?amount=${questionData.numberOfQuestions}&category=${questionData.categoryId}&type=multiple`
-      );
-      const data = await res.data;
-      setFullQuestionData(data.results);
+      try {
+        const savedData = localStorage.getItem("quizQuestions");
+        const savedKey = localStorage.getItem("quizKey");
+
+        const currentKey = `${questionData.numberOfQuestions}-${questionData.categoryId}`;
+
+        if (savedData && savedKey === currentKey) {
+          setFullQuestionData(JSON.parse(savedData));
+          return;
+        }
+
+        const res = await API.get(
+          `api.php?amount=${questionData.numberOfQuestions}&category=${questionData.categoryId}&type=multiple`
+        );
+
+        const data = res.data;
+
+        if (res.status === 429 || data.response_code === 5) {
+          alert("So‘rovlar limiti oshib ketdi. Keyinroq urinib ko‘ring.");
+          return;
+        }
+
+        localStorage.setItem("quizQuestions", JSON.stringify(data.results));
+        localStorage.setItem("quizKey", currentKey);
+        setFullQuestionData(data.results);
+      } catch (error) {
+        alert("Xatolik yuz berdi: " + error);
+      }
     };
+
     fetchQuestions();
   }, [questionData]);
 
@@ -241,7 +267,14 @@ const Quiz = () => {
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Button fullWidth variant="outlined">
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => {
+                  localStorage.removeItem("quizQuestions");
+                  localStorage.removeItem("quizKey");
+                }}
+              >
                 <Link
                   to="/"
                   style={{ textDecoration: "none", color: "#1976d2" }}
