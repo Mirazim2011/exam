@@ -3,6 +3,7 @@ import "./App.css";
 import Layout from "./components/Layout";
 import Home from "./pages/Home/Home";
 import Quiz from "./pages/Quiz/Quiz";
+import History from "./components/History/History";
 
 function App() {
   const router = createBrowserRouter([
@@ -17,6 +18,11 @@ function App() {
         {
           path: "quiz",
           element: <Quiz />,
+        },
+
+        {
+          path: "history",
+          element: <History />,
         },
       ],
     },

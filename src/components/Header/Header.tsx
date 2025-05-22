@@ -10,6 +10,9 @@ const Header = () => {
               Exams
             </Link>
           </h2>
+          <nav>
+            <Link to="/history" className="button">Ishlanganlar</Link>
+          </nav>
         </div>
       </div>
     </header>

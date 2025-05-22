@@ -91,7 +91,7 @@ const Quiz = () => {
         localStorage.setItem("quizKey", currentKey);
         setFullQuestionData(data.results);
       } catch (error) {
-        alert("Xatolik yuz berdi: " + error);
+        console.log("Xatolik yuz berdi: " + error);
       }
     };
 
@@ -132,7 +132,18 @@ const Quiz = () => {
     });
     setCount(correctCount);
     setOpen(true);
+    const history = JSON.parse(localStorage.getItem("quizHistory") || "[]");
+    const newEntry = {
+      // name: ,
+      date: new Date().toLocaleDateString("en-GB"),
+      score: correctCount,
+      total: questionData.numberOfQuestions,
+      status: "pending",
+    };
+    history.unshift(newEntry);
+    localStorage.setItem("quizHistory", JSON.stringify(history));
   };
+  
 
   return (
     <Box p={2} maxWidth="900px" margin="0 auto">
