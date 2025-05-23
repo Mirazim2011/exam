@@ -27,16 +27,19 @@ const History = () => {
     }
   }, []);
 
+  console.log(history);
+  
+
   return (
     <Box p={2} maxWidth="1000px" mx="auto">
       <Typography variant="h5" mb={3}>
-        Test Tarixi
+        Ishlangan Testlar
       </Typography>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
-            {/* <TableCell>Exam Name</TableCell> */}
+            <TableCell>Exam Name</TableCell>
             <TableCell>Created At</TableCell>
             <TableCell>Score</TableCell>
             <TableCell>Total</TableCell>
@@ -51,7 +54,7 @@ const History = () => {
               }}
             >
               <TableCell>{index + 1}</TableCell>
-              {/* <TableCell>{item.name}</TableCell> */}
+              <TableCell>{item.name}</TableCell>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.score}</TableCell>
               <TableCell>{item.total}</TableCell>

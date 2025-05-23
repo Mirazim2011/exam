@@ -33,6 +33,7 @@ const modalStyle = {
 
 const Quiz = () => {
   interface fullQuestionDataType {
+    category: string;
     question: string;
     incorrect_answers: string[];
     correct_answer: string;
@@ -134,7 +135,7 @@ const Quiz = () => {
     setOpen(true);
     const history = JSON.parse(localStorage.getItem("quizHistory") || "[]");
     const newEntry = {
-      // name: ,
+      name: decode(fullQuestionData[0].category),
       date: new Date().toLocaleDateString("en-GB"),
       score: correctCount,
       total: questionData.numberOfQuestions,
@@ -143,7 +144,6 @@ const Quiz = () => {
     history.unshift(newEntry);
     localStorage.setItem("quizHistory", JSON.stringify(history));
   };
-  
 
   return (
     <Box p={2} maxWidth="900px" margin="0 auto">
@@ -302,4 +302,3 @@ const Quiz = () => {
 };
 
 export default Quiz;
-
